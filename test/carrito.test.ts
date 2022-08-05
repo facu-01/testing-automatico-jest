@@ -33,7 +33,7 @@ describe("test", () => {
   });
 
   afterAll(async () => {
-    // await driver.quit();
+   await driver.quit();
   });
 
   test("al incrementar la cantidad de productos, el total refleja la el precio final adecuadamente", async () => {
