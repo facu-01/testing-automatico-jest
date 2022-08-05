@@ -12,8 +12,7 @@ import "selenium-webdriver/firefox";
 import "chromedriver";
 import * as fs from "fs/promises";
 
-// helpers
-
+//#region helpers
 const printElement = async (element: WebElement): Promise<void> => {
   const base64 = await element.takeScreenshot();
 
@@ -21,6 +20,8 @@ const printElement = async (element: WebElement): Promise<void> => {
 
   await fs.writeFile(`./images/${name}.png`, base64, "base64");
 };
+
+//#endregion
 
 describe("test", () => {
   jest.setTimeout(10000);
