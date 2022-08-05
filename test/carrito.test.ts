@@ -16,7 +16,7 @@ import * as fs from "fs/promises";
 const printElement = async (element: WebElement): Promise<void> => {
   const base64 = await element.takeScreenshot();
 
-  const name = await element.getTagName();
+  const name = `${await element.getTagName()} ${await element.getText()}`;
 
   await fs.writeFile(`./images/${name}.png`, base64, "base64");
 };
@@ -33,7 +33,7 @@ describe("test", () => {
   });
 
   afterAll(async () => {
-    await driver.quit();
+    // await driver.quit();
   });
 
   test("al incrementar la cantidad de productos, el total refleja la el precio final adecuadamente", async () => {
@@ -46,12 +46,14 @@ describe("test", () => {
       until.elementLocated(
         By.js(() =>
           document.getElementsByClassName(
-            "vtex-product-price-1-x-currencyContainer vtex-product-price-1-x-currencyContainer--product-selling-price"
+            "vtex-product-price-1-x-sellingPrice vtex-product-price-1-x-sellingPrice--product-selling-price vtex-product-price-1-x-sellingPrice--hasListPrice vtex-product-price-1-x-sellingPrice--product-selling-price--hasListPrice"
           )
         )
       ),
       5000
     );
+
+    await printElement(precioUnitarioElement);
 
     const botonComprarElement = await driver.wait(
       until.elementLocated(
@@ -100,6 +102,8 @@ describe("test", () => {
       until.elementLocated(By.js(() => document.getElementById("items-price"))),
       5000
     );
+
+    printElement(subTotalElement)
 
     // get precios
     const precioUnitario = parseInt(
